@@ -1,0 +1,268 @@
+目录
+1.打开文件
+2.光标移动
+3.模式转换
+4.进入插入模式
+5.复制
+6.粘贴
+7.删除
+8.查找
+9.替换
+10.保存及退出
+11.多文件操作
+12.分屏
+13.其他
+--进阶篇
+
+
+一、入门篇
+1.打开文件
+vim
+vim abc.txt
+vim abc.txt def.txt(多个文件的操作见)
+vim +10 abc.txt
+vim + abc.txt
+vim +/eer abc.txt 或者 vim +/"eer" abc.txt
+vimdiff abc.txt def.txt
+
+2.光标移动
+2.1字符移动
+h 或 5h 或 [回退键 Backspace]
+l 或 5l 或 [空格键 Space]
+2.2单词移动
+w 6w
+W 6W
+b 6b
+B 6B
+e 6e
+E 6E
+2.3行移动
+0  		(数字0)行首
+^			非空白字符行首
+g_		非空白字符行尾
+$			行尾
+k 或 5k 或 (ctrl+p)
+j 或 5j 或 (ctrl+n) 或 (Enter)
+6-
+6+
+(
+)
+10G 或 :10
+2.4段落移动
+{
+}
+%（开始结束括号均可匹配）
+*
+#
+(n)zf 配合 方向键上或下
+zo 或 空格 或 方向键右
+zc
+2.5屏幕移动
+ctrl+u
+ctrl+d
+ctrl+f
+ctrl+b
+ctrl+]      注:跳转到当前光标所在单词对应的主题
+ctrl+O      注:回到前一个位置
+zt
+zz
+zb
+H
+M
+L
+[[
+]]
+G
+gg
+55%
+` 注:跳转到最近光标定位的位置（只能记忆最近两个位置） 反引号
+
+3.模式转换
+3.1命令行模式(command mode）
+参考第4节进入插入模式
+：进入底行模式
+3.2插入模式（Insert mode）
+按「ESC」键回到命令行模式
+3.3底行模式（last line mode）
+可缩写(:set->:se) 补齐(tab 或 CTRL-D)
+/ (查找)    ?(反查)
+3.4Visual模式<v / V / CTRL-v>
+
+4.进入插入模式
+i		光标前
+I		行首
+a		光标后
+A		行尾
+o		光标下加一空白行
+O		光标上加一空白行
+r		替换当前字符
+R		每输入一个字符，将光标下的字符替换掉，光标后移
+s		删除字符进入插入模式
+S		删除当前行内容，行位置还在，进入插入模式
+
+5.复制
+(5)yl 或 (5)yh
+yw
+y0
+y$
+yfa
+yG
+(5)yy
+ctrl+v 方向 y
+
+6.粘贴
+p		复制在下一行
+P		复制在上一行
+:n1,n2 co n3
+:n1,n2 m n3
+
+7.删除
+7.1删除字符
+(5)x 注:x=dl 方向向后
+(5)X 注:X=dh	方向向前
+7.2删除单词
+(n)dw
+(n)db
+diw
+daw
+7.3删除行
+d0
+d$ 或 D
+dfa
+(5)dd
+:5,10 d
+dgg
+dG
+d回车		        注：删除2行【包括光标一行】
+7.4删除并输入
+cw	            注:相当于dw+i，c表示修改，即删除并进入插入模式，
+6cw
+c$ 或 C
+(n)cc
+
+8.查找
+/pattern
+?pattern
+n
+N
+#
+*
+nfx
+
+9.替换
+:s/p1/p2/g
+:s/p1/p2/c
+:n1,n2s/p1/p2/g
+:%s/p1/p2/g
+:%s/p1/p2/gc
+:n,$s/vivian/sky/		        替换n到结尾，每行的第一个
+:.,$s/vivian/sky/g	        替换当前行到结尾，每行的所有
+:s/vivian\//sky\//	        可以使用\作为转义符
+:1,$s/^/some string/
+:%s/$/some string/g
+:%s/\s\+$//					        \+表示匹配多次；$匹配行尾
+:%s/\(\s*\n\)\+/\r/	        去掉所有的空白行
+[c,e,g,i]		c:confirm，每次替换前询问。e:不提示error。g:整行替換。i:ignore不分大小写。
+
+10.保存及退出
+:w
+:w filename
+:n1,n2 w filename
+:saveas <path/to/file>
+:f filename			            相当于复制了一个文件，执行这个命令后，新编辑不会应用于原文件
+:q
+:q!
+ZQ
+:wq 或 :x 或 ZZ		          注：:x仅在需要时保存
+:w !sudo tee %
+
+11.多文件操作
+:n
+:N
+:rew			         回到首个文件
+:e#				         读入编辑名单内的前一个文件
+:bn 和 :bp		     下一个或上一个文件
+:args              显示编辑名单中的各个文件名列表
+:files或 :buffers或 :ls	会列出目前buffer中的所有文件
+
+12.分屏
+见进阶篇
+
+13.其他
+~		              改变字符大小写
+guw		            单词变小写
+gUw		            单词变大写
+xp		            左右交换光标处两字符的位置
+ga		            显示光标下字符在当前encoding下的内码
+.		              重复前一指令
+u 或 :u
+Ctrl + r	        只对u有效
+Ctrl + l	        刷新屏幕显示
+ctrl + z / fg	    暂时挂到后台/跳回编辑页面
+:f 或 Ctrl-g		  显示光标信息
+:!command			    暂时退出vi并执行shell指令，执行完毕后再回到vi
+:r!command		    将命令command的输出结果放到当前行
+:sh						    暂时退出vi到系统下，结束时按Ctrl + d则回到vi。
+vim -x exam.txt		新编辑的文件加密，会提示输入密码
+:X							  文件加密，会提示输入密码
+:map						  列出当前已定义的映射
+:jumps					  列出关于你曾经跳转过的位置的列表，你最后一个跳转的位置被特别以一个”>”号标记
+:marks					  列出自定义的标记，包含VIM内部自定义的标识
+:%!nl						  要对包含空行的所有行进行编号(所有行之前插入行号^I)
+:version				  显示VIM版本信息，包含特性、编译方式及配置文件目录
+:n1,n2 w ! command	将n1行至n2行作为command的输入，若不指定n1，n2，则表示将整个文件
+:options				  打开一个新窗口, 在该窗口的最开头的注释下面是一个选项列表
+gf							  打开光标所在处的word为名的文件，文件需在当前目录下，否则创建新文件
+J			            把下一行的数据连接到本行之后多一空格
+
+
+
+进阶篇
+1.打开文件
+vim -r abc.txt
+vim -R abc.txt
+
+:r filename			  在光标所在处插入一个文件的内容(read)可加入数字 :nr filename
+:e filename
+:e						  	重新载入
+:e!						  	强制放弃修改，重新载入该文件
+
+9.替换
+:%s!\s*//.*!!				        去掉所有的“//”注释
+:%s!\s*/\*\_.\{-}\*/\s*!!g	去掉所有的“/* */”注释
+:%s= *$==										将所有行尾多余的空格删除
+:g/^\s*$/d									将所有不包含字符(空格也不包含)的空行删除
+
+12.分屏
+启动分屏
+vim -On file1 file2
+vim -on file1 file2
+注：n是数字，表示分成几个屏【只会出现n屏，后面跟多了文件不会显示】 :help split
+分屏
+Ctrl+W s		            上下分割当前打开的文件
+Ctrl+W v		            左右分割当前打开的文件
+:sp filename            上下分割，并打开一个新的文件
+:vsp filename	          左右分割，并打开一个新的文件
+关闭分屏
+Ctrl+W c			          关闭当前窗口【关闭不了最后一个】
+Ctrl+W q			          关闭当前窗口，如果只剩最后一个了，则退出Vim
+:qa						          退出vim，并关闭所有屏
+移动光标
+Ctrl+W l
+Ctrl+W h
+Ctrl+W k
+Ctrl+W j
+Ctrl+W w
+注：要在各个屏间切换，只需要先按一下Ctrl+W 
+移动分屏
+Ctrl+W L
+Ctrl+W H
+Ctrl+W K
+Ctrl+W J
+屏幕尺寸
+Ctrl+W =	            让所有的屏都有一样的高度
+Ctrl+W +	            增加高度
+Ctrl+W -	            减少高度
+<C-w>_ (或 <C-w>|)		最大化尺寸 (<C-w>| 垂直分屏)
+关闭分割窗口可以用:close 其实用:q也行
+
